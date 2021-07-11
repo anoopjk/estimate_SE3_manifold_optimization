@@ -142,8 +142,11 @@ def estimate_SE3_LM(T_a_w, T_b_w, T_a_b=None, iterations = 10):
 
         # if the cost increases from previous, break
         if (iteration > 0 and (prev_cost-cost)<=1e-10): break
+        # if the cost reduction is high enough then reduce the lambda
         if (prev_cost-cost) > 10:
-            mu += 0.005
+            mu += 0.001
+        else:
+            mu -= 0.001
         print('exp_operator(delta): ', exp_operator(delta))
         T_a_b = exp_operator(delta) @ T_a_b
         print('T_a_b: ', T_a_b)
